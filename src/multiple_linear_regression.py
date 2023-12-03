@@ -1,13 +1,13 @@
-import pandas as pd
 import numpy as np
 from sklearn import datasets
-
+from regression_plotter import RegressionPlotter
+from model_saver import ModelSaver
 
 class MultipleLinearRegressor:
     def __init__(self, default_intercept=0, default_slope=0) -> None:
         self.intercept = default_intercept
         self.slope = default_slope
-
+    
     def train(self, x: np.array, y: np.array) -> None:
         xIntercept = np.hstack(
             [np.ones((x.shape[0], 1)), x])  # adding a column of ones (to account for the intercept term)
@@ -26,21 +26,19 @@ class MultipleLinearRegressor:
         return np.dot(xIntercept, np.hstack([self.intercept,
                                              self.slope]))  # returning the dot product of xIntercept and the weights array (the intercept and the slope) formula: y = w0 + w1*x1 + w2*x2 + ... + wn*xn
 
+    def get_params(self):
+        return {
+            'intercept': self.intercept,
+            'slope': self.slope.tolist() if hasattr(self.slope, "tolist") else self.slope # convert to
+        }
+
+    def set_params(self, params) -> None:
+        self.intercept = params['intercept']
+        self.slope = params['slope']
 
 if __name__ == "__main__":
     model = MultipleLinearRegressor()
-    '''
-    x = np.array([[2, 2], [2, 3], [3, 3], [4, 3]])
-    #independent variable (feature)
-    y = np.array([0, 1, 2, 3]) # dependent variable (target)
-    x = x.astype(float)
-    x += np.random.rand(*x.shape) # add random noise to x
-    print(f"SimpleLinerRegressor coefficients -- intercept {model.intercept} -- slope {model.slope}") # print the intercept and slope
-    model.train(x, y) # train the model
-    y_pred = model.predict(x) # predict the target variable
-
-    print("Ground truth and predicted values:", y, y_pred, sep="\n")
-    '''
+    
     # Test the model on the diabetes dataset
     diabetes = datasets.load_diabetes()
     diabetes_x = diabetes.data
@@ -58,8 +56,21 @@ if __name__ == "__main__":
     sklearn_y_pred = sklearn_model.predict(diabetes_x)
     print("Ground truth and SKLEARN predicted values:", diabetes_y, sklearn_y_pred, sep="\n")
 
+    '''
+    # plot the regression lines for each feature
+    plotter = RegressionPlotter(model, diabetes.data, diabetes.target)
+    plotter.plot()
+    '''
 
-'''
+    '''
+    # save and load parameters
+    saver = ModelSaver(format='json')
+    saver.save_model(model, 'model_params.json')
+
+    saver.load_model('model_params.json', model)
+    '''
+    
+    '''
     # plotting the results of sklearn and of my own to make visual comparison using matplotlib
 
     import matplotlib.pyplot as plt
@@ -86,4 +97,4 @@ if __name__ == "__main__":
 
     plt.tight_layout()
     plt.show()
-'''
+    '''
