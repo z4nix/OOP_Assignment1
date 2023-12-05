@@ -31,6 +31,53 @@ There are automated checks that verify that your submission is correct:
 3. Style - runs `flake8` on your code to ensure adherence to style guides.
 
 ---
+# Code Report - Deisgn & Choices
+ 
+## MultipleLinearRegressor
 
-## Your report
+## Introduction
+The `MultipleLinearRegressor` class is designed for performing multiple linear regression, using the Linear Regressor code covered in class as a blueprint. This part of the report describes the design choices regarding the public and private members of this class, together with its general functionality. 
+
+## Attributes
+
+### 1. `self._intercept` and `self._slope`
+- **Private or Public?:** Private
+- **Motivation:** 
+  - These attributes represent the internal state of the regression model, more specifically, the intercept and slope (or slopes) of the regression line. Making them private ensures that they cannot be directly modified from outside the class, maintaining the model integral. 
+  - We decided that changes to these attributes should only be made through designated methods (`train` and `set_params`), which include all  of tthe necessary validations and computations
+
+### 2. Other Attributes
+- All other attributes were set to public
+
+## Methods
+
+### 1. `train`
+- **Choice:** Public
+- **Motivation:** 
+  - This method allows users to train the regression model on the data being inputted, therefore, they need to be able to access it
+
+### 2. `predict`
+- **Choice:** Public
+- **Motivation:** 
+  - **Model Utilization:** After training, `predict` is used to make predictions on new data, a fundamental aspect of any regression model.
+
+### 3. `get_params` and `set_params`
+- **Choice:** Public
+- **Motivation:** 
+  - These methods provide an interface  for users to access / modify the model's parameters. Making them public allows for dynamic use while (as mentioned earlier) maintaining the model's integrity
+
+### 4. Exception Handling in `train`
+   - Exception handling for singular matrix inversion is critical to make sure that the matrix inputted is indeed invertible. Necessary type-checks were also inserted.
+
+### 5. Exception Handling in Other Methods
+  - **Type Checking in `train`, `predict`, and `set_params`:** makes sure inputs are of expected types, preventing wrong inputs and unnecessary computation to make up for the error. 
+  - **Validation in `set_params`:** Exception handling as an object. Ensures params are of type dict. 
+    
+## Additional Notes
+- **Type Checking:** The methods include type checks for inputs, improving the robustness of the class
+- **Encapsulation:** Private attributes take advantage of encapsulation, ensuring that the internal state of the class is protected from potential interference or misuse
+
+## Conclusion
+The  `MultipleLinearRegressor` class has been created keeping in mind the principles of encapsulation and robustness. The private attributes protect the internal state of the model, while the public methods provide the functionality to train and use the regression model.
+
 
