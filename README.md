@@ -86,7 +86,7 @@ The  `MultipleLinearRegressor` class has been created keeping in mind the princi
 - **Design Choice:**
 -   The `plot` method adjusts based on the dataset's features. For 1D features, `plotND` is utilized for the feature-target relationship visualization. For 2D features, there is an option to select either a 3D plot (`plot3D`) or individual 2D plots (`plotND`).
 - The use of `plot3D` and `plotND`, without a separate `plot2D` method, simplifies the class while providing visualization options for any feature dimension.
-- the variable 'feature_number' was privatized because it is an internal state variable used for logic within the class rather than something that should be directly modified by users
+- the variable `feature_number` was privatized because it is an internal state variable used for logic within the class rather than something that should be directly modified by users
 
 
 
