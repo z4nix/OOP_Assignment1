@@ -3,43 +3,55 @@ from sklearn import datasets
 from regression_plotter import RegressionPlotter
 from model_saver import ModelSaver
 
+
 class MultipleLinearRegressor:
     def __init__(self, default_intercept=0, default_slope=0) -> None:
         self.intercept = default_intercept
         self.slope = default_slope
-    
+
     def train(self, x: np.array, y: np.array) -> None:
+        if not isinstance(x, np.ndarray) or not isinstance(y, np.ndarray):
+            raise TypeError("x and y must be numpy arrays!")
+
         xIntercept = np.hstack(
             [np.ones((x.shape[0], 1)), x])  # adding a column of ones (to account for the intercept term)
 
-        weights = np.dot(np.linalg.inv(np.dot(xIntercept.T, xIntercept)),
-                         np.dot(xIntercept.T, y))  # computing the weights (w = (X^T * X)^-1 * X^T * y)
-        # above is the the dot product, of the inverse of the dot product, of the transpose of xIntercept and xIntercept and the dot product of the transpose of xIntercept and y
+        try:
+            inverted = np.linalg.inv(np.dot(xIntercept.T, xIntercept)) #checking if the matrix is invertible
+        except np.linalg.LinAlgError:
+            raise Exception("the matrix X^T X is singular and non-invertible!")
 
+        weights = np.dot(inverted, np.dot(xIntercept.T, y))  # computing the weights (w = (X^T * X)^-1 * X^T * y)
+        # above is the the dot product, of the inverse of the dot product, of the transpose of xIntercept and xIntercept and the dot product of the transpose of xIntercept and y
         self.intercept = weights[0]  # setting  intercept to the first  element of the weights array
         self.slope = weights[1:]  # setting slope to the rest of the elements of the weights array
 
+    def predict(self, x: np.array) -> np.array:
+        if not isinstance(x, np.ndarray):
+            raise TypeError("x must be a numpy array!")
 
-    def predict(self, x) -> np.array:
-        xIntercept = np.hstack(
-            [np.ones((x.shape[0], 1)), x])  # adding a column of ones (to account for the intercept term)
+        xIntercept = np.hstack([np.ones((x.shape[0], 1)), x])  # adding a column of ones (to account for the intercept term)
         return np.dot(xIntercept, np.hstack([self.intercept,
                                              self.slope]))  # returning the dot product of xIntercept and the weights array (the intercept and the slope) formula: y = w0 + w1*x1 + w2*x2 + ... + wn*xn
 
     def get_params(self):
         return {
             'intercept': self.intercept,
-            'slope': self.slope.tolist() if hasattr(self.slope, "tolist") else self.slope # convert to
+            'slope': self.slope.tolist() if hasattr(self.slope, "tolist") else self.slope  # convert to
         }
 
-    def set_params(self, params) -> None:
+    def set_params(self, params: dict) -> None:
+        if not isinstance(params, dict):
+            raise TypeError("params must be a dictionary!")
+
         self.intercept = params['intercept']
         self.slope = params['slope']
 
+
 if __name__ == "__main__":
     model = MultipleLinearRegressor()
-    
-    # Test the model on the diabetes dataset
+
+    # test the model on the diabetes dataset
     diabetes = datasets.load_diabetes()
     diabetes_x = diabetes.data
     diabetes_y = diabetes.target
@@ -69,7 +81,7 @@ if __name__ == "__main__":
 
     saver.load_model('model_params.json', model)
     '''
-    
+
     '''
     # plotting the results of sklearn and of my own to make visual comparison using matplotlib
 
