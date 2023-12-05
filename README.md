@@ -31,7 +31,7 @@ There are automated checks that verify that your submission is correct:
 3. Style - runs `flake8` on your code to ensure adherence to style guides.
 
 ---
-# Code Report - Deisgn & Choices
+# Code Report - Design & Choices
  
 ## MultipleLinearRegressor
 
