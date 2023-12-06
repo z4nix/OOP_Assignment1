@@ -81,12 +81,18 @@ The `MultipleLinearRegressor` class is designed for performing multiple linear r
 The  `MultipleLinearRegressor` class has been created keeping in mind the principles of encapsulation and robustness. The private attributes protect the internal state of the model, while the public methods provide the functionality to train and use the regression model.
 
 # RegressionPlotter
-### Visualization Approach and Implementation in `plot` Method
 
-- **Design Choice:**
 -   The `plot` method adjusts based on the dataset's features. For 1D features, `plotND` is utilized for the feature-target relationship visualization. For 2D features, there is an option to select either a 3D plot (`plot3D`) or individual 2D plots (`plotND`).
 - The use of `plot3D` and `plotND`, without a separate `plot2D` method, simplifies the class while providing visualization options for any feature dimension.
 - the variable `feature_number` was privatized because it is an internal state variable used for logic within the class rather than something that should be directly modified by users
+
+# ModelSaver
+-  The class supports multiple serialization formats (JSON and Pickle) to work with different use cases: JSON for human readable and interoperable data, and Pickle for more efficient Python-object handling. The preferred format can be set at initialization.
+  
+- We made the ModelSaver class independent of any specific model, as underlined in the assignment file. It uses generic get_parameters and set_parameters methods, which means that any model class containing such methods will be able to use the ModelSaver class.
+  
+- We added exceptions to the file, in order to ensure the following: permission errors, incorrect file paths, etc. These errors are all related to the user.
+  
 
 
 
