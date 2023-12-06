@@ -35,7 +35,6 @@ There are automated checks that verify that your submission is correct:
  
 ## MultipleLinearRegressor
 
-## Introduction
 The `MultipleLinearRegressor` class is designed for performing multiple linear regression, using the Linear Regressor code covered in class as a blueprint. This part of the report describes the design choices regarding the public and private members of this class, together with its general functionality. 
 
 ## Attributes
@@ -74,11 +73,8 @@ The `MultipleLinearRegressor` class is designed for performing multiple linear r
   - **Validation in `set_params`:** Exception handling as an object. Ensures params are of type dict. 
     
 ## Additional Notes
-- **Type Checking:** The methods include type checks for inputs, improving the robustness of the class
-- **Encapsulation:** Private attributes take advantage of encapsulation, ensuring that the internal state of the class is protected from potential interference or misuse
-
-## Conclusion
-The  `MultipleLinearRegressor` class has been created keeping in mind the principles of encapsulation and robustness. The private attributes protect the internal state of the model, while the public methods provide the functionality to train and use the regression model.
+- The methods include type checks for inputs, improving the robustness of the class
+- Private attributes take advantage of encapsulation, ensuring that the internal state of the class is protected from potential interference or misuse
 
 # RegressionPlotter
 
